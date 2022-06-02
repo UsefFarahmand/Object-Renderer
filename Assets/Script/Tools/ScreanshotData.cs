@@ -15,8 +15,8 @@ public class ScreanshotData
         Rotation = rotation;
     }
 
-    public Vector3 Position;
-    public Quaternion Rotation;
+    [ShowOnly] public Vector3 Position;
+    [ShowOnly] public Quaternion Rotation;
 }
 
 public static class ScreanshotDataManager

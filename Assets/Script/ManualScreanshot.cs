@@ -24,7 +24,7 @@ public class ManualScreanshot : MonoBehaviour
     [SerializeField] private string folderName = "";
 
     [Header("Resault")]
-    [SerializeField, ReadOnly] private List<ScreanshotData> datas;
+    [SerializeField] private List<ScreanshotData> datas;
 
     [Button("Take Screenshot Now", Spacing = ButtonSpacing.Before)]
     private void TakeScreenshot()
@@ -91,6 +91,7 @@ public class ManualScreanshot : MonoBehaviour
 
     private void Reset()
     {
+        Checkbackground();
         name = "Manual Screanshot";
 
         renderSize = new Vector2(1080, 1080);
@@ -107,6 +108,39 @@ public class ManualScreanshot : MonoBehaviour
     private void OnValidate()
     {
         path = Application.dataPath + "/../" + $"{subDirectory}/{folderName}/{spriteSheetName}" + "/";
+
+        Checkbackground();
+    }
+
+    private void Checkbackground()
+    {
+        if (removeBackground)
+        {
+            var cam = Screanshot.GetActiveCamera();
+            if (cam.clearFlags != CameraClearFlags.SolidColor)
+            {
+                cam.clearFlags = CameraClearFlags.SolidColor;
+                if (ColorUtility.TryParseHtmlString("5AEF23", out Color color))
+                {
+                    cam.backgroundColor = color;
+                    backgroundColor = color;
+                }
+                else
+                {
+                    backgroundColor = cam.backgroundColor;
+                }
+            }
+
+            if (backgroundColor != cam.backgroundColor)
+            {
+                cam.backgroundColor = backgroundColor;
+            }
+        }
+        else
+        {
+            var cam = Screanshot.GetActiveCamera();
+            cam.clearFlags = CameraClearFlags.Skybox;
+        }
     }
 #endif    
 }
